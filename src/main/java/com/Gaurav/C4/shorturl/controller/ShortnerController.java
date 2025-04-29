@@ -1,6 +1,8 @@
 package com.Gaurav.C4.shorturl.controller;
 
 import com.Gaurav.C4.shorturl.entity.UrlEntry;
+import com.Gaurav.C4.shorturl.repository.ShortnerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -12,7 +14,11 @@ import java.util.Map;
 @RequestMapping("/api")
 public class ShortnerController {
 
+    @Autowired
+    private ShortnerRepository shortnerRepository;
+
     private final Map<Long, UrlEntry> CACHE = new HashMap<>();
+
 
     @GetMapping("/url")
     public List<UrlEntry> getAllUrls() {
@@ -34,5 +40,10 @@ public class ShortnerController {
     @DeleteMapping("url/{id}")
     public UrlEntry deleteUrlEntryById(@PathVariable Long id) {
         return CACHE.remove(id);
+    }
+
+    @GetMapping("url/count")
+    public int getUrlEntryCount() {
+        return shortnerRepository.countUrlEntries();
     }
 }
